@@ -217,7 +217,7 @@ theorem Const.get?_mergeWith [TransCmp cmp] [LawfulEqCmp cmp]
 
 attribute [local instance low] beqOfOrd
 
-theorem Internal.Impl.Const.get?_filter [Ord α] [TransOrd α]
+theorem Internal.Impl.Const.get?_filter_with_getKey_pfilter [Ord α] [TransOrd α]
     (m : DTreeMap.Internal.Impl α (fun _ => β)) (h : m.WF) (f : α → β → Bool) (k : α) :
     Const.get? (m.filter f h.balanced).1 k = (Const.get? m k).pfilter (fun v h' => f (m.getKey k ((contains_eq_isSome_get? h).trans (Option.isSome_of_eq_some h'))) v) := by
   -- This manual proof is usually done by the `simp_to_model` tactic
@@ -226,11 +226,11 @@ theorem Internal.Impl.Const.get?_filter [Ord α] [TransOrd α]
   apply Std.Internal.List.Const.getValue?_filter
   apply h.ordered.distinctKeys
 
-theorem get?_filter {cmp : α → α → Ordering} [TransCmp cmp]
+theorem get?_filter_with_getKey_pfilter {cmp : α → α → Ordering} [TransCmp cmp]
     (m : DTreeMap α (fun _ => β) cmp) (f : α → β → Bool) (k : α) :
     Const.get? (m.filter f) k = (Const.get? m k).pfilter (fun v h' => f (m.getKey k (Const.contains_eq_isSome_get?.trans (Option.isSome_of_eq_some h'))) v) :=
   letI : Ord α := ⟨cmp⟩
-  DTreeMap.Internal.Impl.Const.get?_filter m.inner m.wf _ _
+  DTreeMap.Internal.Impl.Const.get?_filter_with_getKey_pfilter m.inner m.wf _ _
 
 end DTreeMap
 

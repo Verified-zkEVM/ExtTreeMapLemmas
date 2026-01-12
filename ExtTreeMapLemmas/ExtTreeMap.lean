@@ -16,7 +16,10 @@ theorem getElem?_pfilter
   {m : ExtTreeMap α β cmp} {f : α → β → Bool} {k : α} :
   (m.filter f)[k]? =
   m[k]?.pfilter (fun v h' => f (m.getKey k (contains_eq_isSome_getElem?.trans (Option.isSome_of_eq_some h'))) v) :=
-  ExtDTreeMap.get?_filter m.inner f k
+  by
+    generalize_proofs at *;
+    -- Apply the hypothesis `h_filter_eq` directly to conclude the proof.
+    apply Std.ExtDTreeMap.get?_filter_with_getKey_pfilter
 
 variable {α β : Type} {cmp : α → α → Ordering}
 variable {k : α} {m m₁ m₂ : Std.ExtTreeMap α β cmp} {f : α → β → β → β}
@@ -108,9 +111,9 @@ lemma toList_ofList [BEq α] [LawfulBEq α] : ofList (toList m) cmp = m := by
   grind
 
 @[simp, grind =]
-lemma getElem?_filter {β : Type} {f : α → β → Bool} {k : α} {m : ExtTreeMap α β cmp} :
+lemma getElem?_filter_with_getKey {β : Type} {f : α → β → Bool} {k : α} {m : ExtTreeMap α β cmp} :
   (m.filter f)[k]? = m[k]?.filter (f k) := by
-  simp [ExtTreeMap.getElem?_pfilter]
+  simp
 
 variable {f : α → β → Bool}
 
