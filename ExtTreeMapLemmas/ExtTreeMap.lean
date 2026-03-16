@@ -8,7 +8,7 @@ variable {α β : Type}
 
 attribute [local instance low] beqOfOrd
 attribute [grind ext] ExtTreeMap.ext_getElem?
-attribute [grind] ExtTreeMap.distinct_keys_toList ExtTreeMap.getElem?_ofList_of_mem
+attribute [grind .] ExtTreeMap.distinct_keys_toList ExtTreeMap.getElem?_ofList_of_mem
 
 @[grind =]
 theorem getElem?_pfilter
