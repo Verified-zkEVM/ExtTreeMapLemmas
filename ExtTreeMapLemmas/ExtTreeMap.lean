@@ -4,7 +4,9 @@ import Mathlib.Tactic
 
 namespace Std.ExtTreeMap
 
-variable {α β : Type}
+universe u v
+
+variable {α : Type u} {β : Type v}
 
 attribute [local instance low] beqOfOrd
 attribute [grind ext] ExtTreeMap.ext_getElem?
@@ -21,7 +23,7 @@ theorem getElem?_pfilter
     -- Apply the hypothesis `h_filter_eq` directly to conclude the proof.
     apply Std.ExtDTreeMap.get?_filter_with_getKey_pfilter
 
-variable {α β : Type} {cmp : α → α → Ordering}
+variable {α : Type u} {β : Type v} {cmp : α → α → Ordering}
 variable {k : α} {m m₁ m₂ : Std.ExtTreeMap α β cmp} {f : α → β → β → β}
 
 @[simp, grind =]
@@ -111,7 +113,7 @@ lemma toList_ofList [BEq α] [LawfulBEq α] : ofList (toList m) cmp = m := by
   grind
 
 @[simp, grind =]
-lemma getElem?_filter_with_getKey {β : Type} {f : α → β → Bool} {k : α} {m : ExtTreeMap α β cmp} :
+lemma getElem?_filter_with_getKey {f : α → β → Bool} {k : α} {m : ExtTreeMap α β cmp} :
   (m.filter f)[k]? = m[k]?.filter (f k) := by
   simp
 
